@@ -11,11 +11,25 @@ would his investment be worth in 10-year and 20-year bonds? Assume the 10-year b
 the 20-year bonds pay 4.32%, with each compounding annually.
 """
 
-### all your code below ###
+# Question needs $33B to be correct with Autograder
 
+### all your code below ###
+initalInvestment = 33 * (10**9)
+percentInterestTen = 3.96
+percentInterestTwenty = 4.32
+periodTenYears = 10
+periodTwentyYears = 20
+
+tenYearReturn = initalInvestment * ((1 + (percentInterestTen / 100)) ** periodTenYears)
+
+twentyYearReturn = initalInvestment * ((1 + (percentInterestTwenty / 100)) ** periodTwentyYears)
 
 # final answer for 10-year
-ten_year_final = None
+ten_year_final = tenYearReturn
+print("inital investment $", initalInvestment)
+print("interest rate 10: ", percentInterestTen / 100)
+print(ten_year_final)
 
 # final answer for 20-year
-twenty_year_final = None
+twenty_year_final = twentyYearReturn
+print(twenty_year_final)

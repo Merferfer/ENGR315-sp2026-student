@@ -10,6 +10,11 @@ Note: this problem does not require the "compounding interest" formula from the 
 
 ### Your code here ###
 
-in_state_gift = 0
+#In State
+inStateTotalCost = 30792
+outStateTotalCost = 47882
 
-out_state_gift = 0
+in_state_gift = inStateTotalCost / .05
+
+
+out_state_gift = outStateTotalCost / .05
