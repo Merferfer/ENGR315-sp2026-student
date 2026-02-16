@@ -1,5 +1,12 @@
 from os.path import exists
+# from os.path import realpath
+# from os.path import __file__
+# from os import chdir
 
+
+# script_path = realpath(__file__)
+# print(script_path)
+# chdir((script_path))
 # check to see if we can see "train_data.txt" via relative path
 relative_path = "train_data.txt"
 if exists(relative_path):
