@@ -3,6 +3,8 @@ import os
 import math
 import sys
 
+from numpy.ma import argmin
+
 
 def parse_tensile_file(path_to_file):
     file = open(path_to_file)
@@ -61,8 +63,13 @@ def calculate_stress(force, sample_diameter):
     """
 
     ### YOUR SOLUTION FROM STEP 1 TEMPLATE HERE ###
+    a_c = (math.pi / 4) * sample_diameter**2
+    # calculate stress (MPa) from load (kN) and cross-sectional area
+    ### your code here ###
+    stress = 1000*force / a_c
+    # delete this line and replace it with your own
 
-    return None
+    return stress
 
 
 def calculate_max_strength_strain(strain, stress):
@@ -75,9 +82,13 @@ def calculate_max_strength_strain(strain, stress):
     Fracture Strain: the maximum strain experienced before fracture
     """
 
-    ### YOUR SOLUTION FROM STEP 2 TEMPLATE HERE ###
+    ultimate_tensile_stress = np.max(stress)
 
-    return -1, -1
+    # calculate the maximum strain experienced
+    fracture_strain = np.max(strain)
+
+    return ultimate_tensile_stress, fracture_strain
+
 
 def calculate_elastic_modulus(strain, stress):
     """
@@ -100,13 +111,14 @@ def calculate_elastic_modulus(strain, stress):
     # use from 0 to that value to create a linear plot
 
     ### your code below ###
-    secant_strain = -1
+    reducedStresses = np.abs(stress - (0.4 * calculate_max_strength_strain(strain,stress)[0]))
+    linear_index = np.argmin(reducedStresses)
+
 
     # Step 3b: find the intersection between 40% line and the curvey
     # take the abs() difference between the stress vector and secant_straint point
 
     ### your code below ###
-    diffs = -1
 
     # use np.argmin() to find the minimum of the diffs array.
     # this will be the INDEX of the point in stress-strain that is closest to
@@ -117,15 +129,15 @@ def calculate_elastic_modulus(strain, stress):
 
     # Step 3c: down select to linear region for stress and strain
     # using list slicing. Uncomment lines below
-    # linear_stress = stress[# list slice#]
-    # linear_strain = strain[#list slice#]
+    linear_stress = stress[:linear_index]
+    linear_strain = strain[:linear_index]
 
     # Step 3d: find least squares fit to a line in the linear region
     # use 1-degree polynominal fit (line) from np.polyfit
     # save the slope and intercept so we can plot the line later
 
     # uncomment the line below and call np.polyfit
-    # slope, intercept = ....
+    slope, intercept = np.polyfit(linear_strain,linear_stress,deg=1)
 
     return linear_index, slope, intercept
 
