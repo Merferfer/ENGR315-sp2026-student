@@ -65,8 +65,22 @@ def first_question(data):
     # When was the first positive COVID case in Harrisonburg?
     :return:
     """
-
     # your code here
+    RockinghamFirstCase = (None,None,None,None,None,None)
+    HarrisonburgFirstCase = (None,None,None,None,None,None)
+    for entry in data:
+        if(RockinghamFirstCase[0] != None and HarrisonburgFirstCase[0] != None):
+            # print("break")
+            break
+        elif(entry[1] == "Harrisonburg city" and HarrisonburgFirstCase[0] == None):
+            # print(entry)
+            HarrisonburgFirstCase = entry
+        elif(entry[1] == "Rockingham" and entry[2] == "Virginia" and RockinghamFirstCase[0] == None):
+            # print(entry)
+            RockinghamFirstCase = entry
+
+    print("The first positive COVID case in Rockingham County was ", RockinghamFirstCase[0])
+    print("The first positive COVID case in Harrisonburg City was ", HarrisonburgFirstCase[0])
     return
 
 def second_question(data):
@@ -76,8 +90,34 @@ def second_question(data):
     # What day was the greatest number of new daily cases recorded in Rockingham County?
     :return:
     """
-
     # your code here
+    maxNewDailyCasesHarrisonburg = 0
+    maxNewDailyCasesRockingham = 0
+    
+    RockinghamSpike = (None,None,None,None,None,None)
+    HarrisonburgSpike = (None,None,None,None,None,None)
+    
+    prevCaseHarrisonburg = 0
+    prevCaseRockingham = 0
+
+    for entry in data:
+
+      if(entry[1] == "Harrisonburg city"):
+        if((entry[4] - prevCaseHarrisonburg) > maxNewDailyCasesHarrisonburg):
+          maxNewDailyCasesHarrisonburg = entry[4] - prevCaseHarrisonburg
+          HarrisonburgSpike = entry
+
+        prevCaseHarrisonburg = entry[4]
+
+      elif(entry[1] == "Rockingham" and entry[2] == "Virginia"):
+        if((entry[4] - prevCaseRockingham) > maxNewDailyCasesRockingham):
+          maxNewDailyCasesRockingham = entry[4] - prevCaseRockingham
+          RockinghamSpike = entry
+
+        prevCaseRockingham = entry[4]
+
+    print("The day in Harrisonburg City with the greatest number of new daily cases was ",HarrisonburgSpike[0]," with an increase of ",maxNewDailyCasesHarrisonburg," cases.")
+    print("The day in Rockingham County with the greatest number of new daily cases was ",RockinghamSpike[0]," with an increase of ",maxNewDailyCasesRockingham," cases.")
     return
 
 def third_question(data):
@@ -87,15 +127,49 @@ def third_question(data):
     # This is the 7-day period where the number of new cases was maximal.
     :return:
     """
-    
     # your code here
+    HarrisonburgWeek = []
+    HarrisonburgWorstWeek = []
+    HarrisonburgWeekRecord = 0
+    RockinghamWeek = []
+    RockinghamWorstWeek = []
+    RockinghamWeekRecord = 0
+
+    for entry in data:
+      if(entry[1] == "Harrisonburg city"):
+        HarrisonburgWeek.append(entry)
+
+        if(len(HarrisonburgWeek) <= 7):
+          continue
+
+        HarrisonburgWeek.pop(0)
+
+        if((HarrisonburgWeek[6][4] - HarrisonburgWeek[0][4]) > HarrisonburgWeekRecord):
+          HarrisonburgWeekRecord = HarrisonburgWeek[6][4] - HarrisonburgWeek[0][4]
+          HarrisonburgWorstWeek = HarrisonburgWeek
+
+      elif(entry[1] == "Rockingham" and entry[2] == "Virginia"):
+        RockinghamWeek.append(entry)
+
+        if(len(RockinghamWeek) <= 7):
+          continue
+
+        RockinghamWeek.pop(0)
+
+        if((RockinghamWeek[6][4] - RockinghamWeek[0][4]) > RockinghamWeekRecord):
+          RockinghamWeekRecord = RockinghamWeek[6][4] - RockinghamWeek[0][4]
+          RockinghamWorstWeek = RockinghamWeek
+
+
+    print("The worst week in Harrisonburg City started on ",HarrisonburgWorstWeek[0][0]," and had a total new case number of ",HarrisonburgWeekRecord)
+    print("The worst week in Rockingham County started on ",RockinghamWorstWeek[0][0]," and had a total new case number of ",RockinghamWeekRecord)
     return
 
 if __name__ == "__main__":
-    data = parse_nyt_data('us-counties.csv')
+    data = parse_nyt_data('./Exams/Assignment 1 - COVID Data/us-counties.csv')
 
-    for (date,county, state, fips, cases, deaths) in data:
-        print('On ', date, ' in ', county, ' ', state, ' there were ', cases, ' cases and ', deaths, ' deaths')
+    # for (date,county, state, fips, cases, deaths) in data:
+    #     print('On ', date, ' in ', county, ' ', state, ' there were ', cases, ' cases and ', deaths, ' deaths')
 
 
     # write code to address the following question: Use print() to display your responses.
