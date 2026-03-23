@@ -79,8 +79,8 @@ def first_question(data):
             # print(entry)
             RockinghamFirstCase = entry
 
-    print("The first positive COVID case in Rockingham County was ", RockinghamFirstCase[0])
-    print("The first positive COVID case in Harrisonburg City was ", HarrisonburgFirstCase[0])
+    print("The first positive COVID case in Rockingham County was", RockinghamFirstCase[0])
+    print("The first positive COVID case in Harrisonburg City was", HarrisonburgFirstCase[0])
     return
 
 def second_question(data):
@@ -116,8 +116,8 @@ def second_question(data):
 
         prevCaseRockingham = entry[4]
 
-    print("The day in Harrisonburg City with the greatest number of new daily cases was ",HarrisonburgSpike[0]," with an increase of ",maxNewDailyCasesHarrisonburg," cases.")
-    print("The day in Rockingham County with the greatest number of new daily cases was ",RockinghamSpike[0]," with an increase of ",maxNewDailyCasesRockingham," cases.")
+    print("The day in Harrisonburg City with the greatest number of new daily cases was",HarrisonburgSpike[0],"with an increase of",maxNewDailyCasesHarrisonburg,"cases.")
+    print("The day in Rockingham County with the greatest number of new daily cases was",RockinghamSpike[0],"with an increase of",maxNewDailyCasesRockingham,"cases.")
     return
 
 def third_question(data):
@@ -129,10 +129,12 @@ def third_question(data):
     """
     # your code here
     HarrisonburgWeek = []
-    HarrisonburgWorstWeek = []
+    HarrisonburgWorstWeekBeginning = 0
+    HarrisonburgWorstWeekEnd = 0
     HarrisonburgWeekRecord = 0
     RockinghamWeek = []
-    RockinghamWorstWeek = []
+    RockinghamWorstWeekBeginning = 0
+    RockinghamWorstWeekEnd = 0
     RockinghamWeekRecord = 0
 
     for entry in data:
@@ -145,10 +147,11 @@ def third_question(data):
         HarrisonburgWeek.pop(0)
 
         if((HarrisonburgWeek[6][4] - HarrisonburgWeek[0][4]) > HarrisonburgWeekRecord):
-          HarrisonburgWeekRecord = HarrisonburgWeek[6][4] - HarrisonburgWeek[0][4]
-          HarrisonburgWorstWeek = HarrisonburgWeek
+            HarrisonburgWeekRecord = HarrisonburgWeek[6][4] - HarrisonburgWeek[0][4]
+            HarrisonburgWorstWeekBeginning = HarrisonburgWeek[0][0]
+            HarrisonburgWorstWeekEnd = HarrisonburgWeek[6][0]
 
-      elif(entry[1] == "Rockingham" and entry[2] == "Virginia"):
+      elif((entry[1] == "Rockingham") and (entry[2] == "Virginia")):
         RockinghamWeek.append(entry)
 
         if(len(RockinghamWeek) <= 7):
@@ -158,11 +161,11 @@ def third_question(data):
 
         if((RockinghamWeek[6][4] - RockinghamWeek[0][4]) > RockinghamWeekRecord):
           RockinghamWeekRecord = RockinghamWeek[6][4] - RockinghamWeek[0][4]
-          RockinghamWorstWeek = RockinghamWeek
+          RockinghamWorstWeekBeginning = RockinghamWeek[0][0]
+          RockinghamWorstWeekEnd = RockinghamWeek[6][0]
 
-
-    print("The worst week in Harrisonburg City started on ",HarrisonburgWorstWeek[0][0]," and had a total new case number of ",HarrisonburgWeekRecord)
-    print("The worst week in Rockingham County started on ",RockinghamWorstWeek[0][0]," and had a total new case number of ",RockinghamWeekRecord)
+    print("The worst week in Harrisonburg City started on",HarrisonburgWorstWeekBeginning,"and ends on",HarrisonburgWorstWeekEnd,"and had a total new case number of",HarrisonburgWeekRecord)
+    print("The worst week in Rockingham County started on",RockinghamWorstWeekBeginning,"and ends on",RockinghamWorstWeekEnd ,"and had a total new case number of",RockinghamWeekRecord)
     return
 
 if __name__ == "__main__":
