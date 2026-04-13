@@ -1,3 +1,7 @@
+from random import sample
+
+from matplotlib.pylab import linspace
+
 import numpy as np
 from scipy.stats import norm, expon
 import matplotlib
@@ -44,6 +48,15 @@ Step #4: Generate a plot for the Fitted Normal Distribution, include a title and
 """
 
 # Your Code Here #
+
+sample_mean = np.mean(normal_samples)
+sample_std_dev = np.std(normal_samples)
+
+x = np.linspace(-31,41,1000)
+
+y = norm.pdf(x, loc=sample_mean, scale=sample_std_dev)
+
+plt.plot(x,y, label='Generated Normal')
 
 """
 Step 5: Compare your Fit against the true data
@@ -93,6 +106,14 @@ Step #9: Generate a plot for the Fitted Exponential Distribution, include a titl
 """
 
 # Your Code Here #
+(fit_loc, fit_scale) = expon.fit(exponential_samples)
+
+fit_beta = fit_scale
+
+x = np.linspace(0,50,10000)
+y = expon.pdf(x,scale=fit_beta)
+
+plt.plot(x,y, label='Fit Exponential')
 
 """
 Step #10: Compare your Fit against the true data
