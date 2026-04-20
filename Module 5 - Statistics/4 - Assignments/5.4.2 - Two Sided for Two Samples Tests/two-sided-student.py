@@ -34,6 +34,22 @@ def two_sided_tests(_files1: list, _files2: list , _alpha: float):
     reject_null_hypothesis = []
 
     # YOUR CODE HERE #
+    for i in range(0,len(_files1)):
+        file1 = open(_files1[i],'r')
+        data1 = np.loadtxt(file1)
+
+        file2 = open(_files2[i],'r')
+        data2 = np.loadtxt(file2)
+
+        mean1 = np.mean(data1)
+        
+        mean2 = np.mean(data2)
+
+        (_, pval1) = ttest_1samp(data1,popmean=mean2,alternative='two-sided')
+        (_, pval2) = ttest_1samp(data2,popmean=mean1,alternative='two-sided')
+
+        if((pval1 < _alpha) or (pval2 < _alpha)):
+          reject_null_hypothesis.append((_files1[i],_files2[i]))
 
     # return samples that were rejected
     return reject_null_hypothesis
