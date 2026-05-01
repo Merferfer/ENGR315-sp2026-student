@@ -17,7 +17,7 @@ filepath = '../../../data/ekg/processed_'+dataset+'.npy'
 
 # once loaded, place in an array called signal. This is a 1-D signal of processed
 # heart beat data. No filtering/processing is required.
-signal = np.load(filepath)
+signal = np.load(filepath[7:])
 
 """
 Step 2: Determine how much data to use...
@@ -30,9 +30,11 @@ signal = signal[0:3300]
 """
 Step 3: Use Find Peaks
 """
+threshold = 1.75
+timeout = 1 / 180 * 60
 
 # you may want to explore various parameters for the function that will help you!
-peaks, _ = find_peaks(signal)
+peaks, _ = find_peaks(signal,height=threshold,distance=(timeout/0.003))
 print("Within the sample we found ", len(peaks), " heart beats with find_peaks!")
 
 """

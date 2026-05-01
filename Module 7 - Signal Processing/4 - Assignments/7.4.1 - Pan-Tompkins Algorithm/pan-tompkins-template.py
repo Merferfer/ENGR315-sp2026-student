@@ -1,5 +1,6 @@
 import numpy as np
 from ekg_testbench import EKGTestBench
+from scipy.signal import find_peaks
 
 def detect_heartbeats(filepath):
     """
@@ -16,13 +17,20 @@ def detect_heartbeats(filepath):
 
     # load data in matrix from CSV file; skip first two rows
     ## your code here
+    ActualFilepath = filepath[7:]
+    file = open(ActualFilepath)
+    Data = np.loadtxt(file,skiprows=2,delimiter=",")
+    # Data = Data[0:21602] #Use only 60s to start
 
     # save each vector as own variable
     ## your code here
+    timeElapsed = Data[:,0]
+    MLII = Data[:,1]
+    V1 = Data[:,2]
 
     # identify one column to process. Call that column signal
 
-    signal = -1 ## your code here
+    signal = MLII ## your code here
 
     # pass data through LOW PASS FILTER (OPTIONAL)
     ## your code here
@@ -32,19 +40,35 @@ def detect_heartbeats(filepath):
 
     # pass data through differentiator
     ## your code here
+    end = len(signal)
+    diff = signal[1:] - signal[0:(end-1)] 
 
     # pass data through square function
     ## your code here
+    square = diff * diff
 
     # pass through moving average window
     ## your code here
+
+    end = len(square)
+
+    avged = np.empty(end-10,dtype=float)
+    for i in range(0,10):
+      avged += square[i:(end - 10 + i)]
+    avged = avged / 10
+
+    signal = avged
 
     # use find_peaks to identify peaks within averaged/filtered data
     # save the peaks result and return as part of testbench result
 
     ## your code here peaks,_ = find_peaks(....)
-
-    beats = None
+    
+    threshold = 1.75
+    timeout = 1 / 180 * 60
+    
+    peaks,_ = find_peaks(signal,height=threshold,distance=(timeout/0.003))
+    beats = peaks
 
     # do not modify this line
     return signal, beats
@@ -60,13 +84,13 @@ if __name__ == "__main__":
     database_name = 'mitdb_201'
 
     # set to true if you wish to generate a debug file
-    file_debug = False
+    file_debug = True
 
     # set to true if you wish to print overall stats to the screen
     print_debug = True
 
     # set to true if you wish to show a plot of each detection process
-    show_plot = False
+    show_plot = True
 
     ### DO NOT MODIFY BELOW THIS LINE!!! ###
 
