@@ -17,10 +17,9 @@ def detect_heartbeats(filepath):
 
     # load data in matrix from CSV file; skip first two rows
     ## your code here
-    ActualFilepath = filepath[7:]
+    ActualFilepath = filepath
     file = open(ActualFilepath)
     Data = np.loadtxt(file,skiprows=2,delimiter=",")
-    # Data = Data[0:21602] #Use only 60s to start
 
     # save each vector as own variable
     ## your code here
@@ -30,7 +29,7 @@ def detect_heartbeats(filepath):
 
     # identify one column to process. Call that column signal
 
-    signal = MLII ## your code here
+    signal = V1 ## your code here
 
     # pass data through LOW PASS FILTER (OPTIONAL)
     ## your code here
@@ -64,7 +63,7 @@ def detect_heartbeats(filepath):
 
     ## your code here peaks,_ = find_peaks(....)
     
-    threshold = 1.75
+    threshold = .0015
     timeout = 1 / 180 * 60
     
     peaks,_ = find_peaks(signal,height=threshold,distance=(timeout/0.003))
@@ -81,7 +80,7 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
     # database name
-    database_name = 'mitdb_201'
+    database_name = 'mitdb_220'
 
     # set to true if you wish to generate a debug file
     file_debug = True
@@ -161,7 +160,7 @@ if __name__ == "__main__":
     if print_debug:
         print("-------------------------------------------------")
         print("Database|\t\tTP|\t\tFP|\t\tFN|\t\tF1")
-        print(database_name, "|\t\t", true_positive, "|\t", false_positive, '|\t', false_negative, '|\t', round(f1, 3))
+        print(database_name, "|\t\t", true_positive, "|\t\t", false_positive, '|\t\t', false_negative, '|\t\t', round(f1, 3))
         print("-------------------------------------------------")
 
     print("Done!")

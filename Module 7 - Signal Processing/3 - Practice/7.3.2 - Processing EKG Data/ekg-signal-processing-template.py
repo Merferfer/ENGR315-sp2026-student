@@ -22,8 +22,10 @@ signal = 0
 ## YOUR CODE HERE ##
 file = open(signal_filepath[7:])
 Data = np.loadtxt(file,delimiter=",",skiprows=2)
-signal = Data[0:21602] #Use only 60s
-# signal = Data[0:3300] #10sec
+# signal = Data[0:21602] #Use only 60s
+signal = Data[0:3300] #10sec
+plt.plot(signal[:,1])
+plt.show()
 
 
 """
@@ -40,12 +42,16 @@ Step 3: Pass data through differentiator. Optional to make it weighted.
 end = len(signal[:,1])
 MLII = signal[:,1]
 diff = MLII[1:] - MLII[0:(end-1)] 
+plt.plot(diff)
+plt.show()
 
 """
 Step 4: Square the results of the previous step
 """
  ## YOUR CODE HERE ##
 square = diff * diff
+plt.plot(square)
+plt.show()
 
 """
 Step 5: Pass a moving average over your data
@@ -53,16 +59,18 @@ Step 5: Pass a moving average over your data
 ## YOUR CODE HERE
 
 #Moving average of bucket size 10
+bucketSize = 15
+
 end = len(square)
 
-avged = np.empty(end-10,dtype=float)
+avged = np.empty(end-bucketSize,dtype=float)
 for i in range(0,10):
-  avged += square[i:(end - 10 + i)]
+  avged = avged + square[i:(end - bucketSize + i)]
 avged = avged / 10
 
-signal = avged
+signal1 = avged
 
 # make a plot of the results. Can change the plot() parameter below to show different intermediate signals
 plt.title('Process Signal for ' + database_name)
-plt.plot(signal)
+plt.plot(signal1)
 plt.show()
